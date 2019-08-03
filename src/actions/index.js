@@ -6,7 +6,7 @@ let nextUserId = 0;
 export const addMessage = (message, author) => ({
     type: types.ADD_MESSAGE,
     id: nextMessageId++,
-    massage: message,
+    message: message,
     author: author
 });
 
@@ -20,7 +20,7 @@ export const addUser = (name) => ({
 export const messageReceived = (message, author) => ({
     types: types.MESSAGE_RECEIVED,
     id: nextMessageId++,
-    massage: message,
+    message: message,
     author: author
 });
 
