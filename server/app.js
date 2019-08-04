@@ -1,12 +1,11 @@
-import WebSocket from 'ws'
+const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({ port: 8989 });
 
-wss.getUniqueID = function () {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4();
+let lastUserId = 0;
+
+wss.getNextUserId = function () {
+    return ++lastUserId;
 };
 
 let users = {};
@@ -20,12 +19,12 @@ const broadcast = (data, ws) => {
 };
 
 wss.on('connection', (ws) => {
-    ws.id = wss.getUniqueID();
+    ws.id = wss.getNextUserId();
     ws.on('message', (message) => {
         const data = JSON.parse(message);
         switch (data.type) {
             case 'ADD_USER':
-                users[ws.id] = { name: data.name, id: ws.id };
+                users[`id_${ws.id}`] = { name: data.name, id: ws.id };
                 ws.send(JSON.stringify({ type: 'USERS_LIST', users: Object.values(users)}));
                 broadcast({ type: 'USERS_LIST', users: Object.values(users)}, ws);
                 break;
@@ -41,7 +40,7 @@ wss.on('connection', (ws) => {
         }
     });
     ws.on('close', () => {
-        delete users[ws.id];
+        delete users[`id_${ws.id}`];
         broadcast({ type: 'USERS_LIST', users: Object.values(users)}, ws);
     });
 });
