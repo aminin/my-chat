@@ -11,20 +11,20 @@ export const addMessage = (message, author) => ({
 });
 
 export const addUser = (name) => ({
-    types: types.ADD_USER,
+    type: types.ADD_USER,
     id: nextUserId++,
     name
 });
 
 // От другого пользователя
 export const messageReceived = (message, author) => ({
-    types: types.MESSAGE_RECEIVED,
+    type: types.MESSAGE_RECEIVED,
     id: nextMessageId++,
     message: message,
     author: author
 });
 
 export const poulateUsersList = (users) => ({
-    types: types.USERS_LIST,
+    type: types.USERS_LIST,
     users
 });
