@@ -8,7 +8,7 @@ const AddMessage = (props) => {
     return <section id="new-message">
         <input onKeyPress={(e) => {
                 if (e.key === 'Enter') {
-                    props.addMessage(input.value, 'Me');
+                    props.addMessage(input.value, 'Я');
                     input.value = '';
                 }
             }}
